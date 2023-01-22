@@ -16,13 +16,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 route::post('saveuser', UserController::class . '@store');
-route::get('users', UserController::class . '@index');
+route::group(['middleware'=>['apijwt']], function () {
+    route::get('users', UserController::class . '@index');
+
+    Route::post('logout', AuthController::class . '@logout');
+});
 Route::post('login', AuthController::class . '@login');
-Route::post('logout', AuthController::class . '@logout');
 Route::post('refresh', AuthController::class . '@refresh');
 Route::post('me', AuthController::class . '@me');
