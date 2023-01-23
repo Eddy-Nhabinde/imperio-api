@@ -22,6 +22,8 @@ route::group(['middleware'=>['apijwt']], function () {
 
     Route::post('logout', AuthController::class . '@logout');
 });
+Route::post('passwordRequest', AuthController::class . '@requestPassword');
+
 Route::post('login', AuthController::class . '@login');
 Route::post('refresh', AuthController::class . '@refresh');
 Route::post('me', AuthController::class . '@me');
