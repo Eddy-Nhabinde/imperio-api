@@ -73,8 +73,39 @@ class ProdutoController extends Controller
         }
     }
 
-    function updateProductPicture()
+    function updatePicture(Request $request, $id)
     {
+        $newphpto = $request->file('foto');
+        if ($newphpto) {
+            $foto = DB::table('produtos')
+                ->select('foto')
+                ->where('id', $id)
+                ->get();
+
+            if ($foto[0]->foto) {
+                $name = time() . '.' . $newphpto->getClientOriginalExtension();
+                $newphpto->move('fotos/', $name);
+                unlink("fotos/" . $foto[0]->foto);
+                try {
+                    DB::table('produtos')
+                        ->where('id', $id)
+                        ->update([
+                            'foto' => $name,
+                        ]);
+                    return response()->json([
+                        'success' => 'Foto atualizada com sucesso'
+                    ]);
+                } catch (Exception $th) {
+                    return response()->json([
+                        'error' => 'Ocorreu um erro na atualizacao!'
+                    ]);
+                }
+            }
+        } else {
+            return response()->json([
+                'warning' => 'Por favor selecione uma foto valida'
+            ]);
+        }
     }
 
     function validating($request)

@@ -24,10 +24,12 @@ route::group(['middleware' => ['apijwt']], function () {
     route::get('users', UserController::class . '@index');
 
     Route::post('logout', AuthController::class . '@logout');
+
+    route::put('updateProduct/{id}', ProdutoController::class . '@update');
 });
 route::post('saveProduct', ProdutoController::class . '@SaveProduct');
 
-route::put('updateProduct/{id}', ProdutoController::class . '@update');
+route::post('updateProductPicture/{id}', ProdutoController::class . '@updatePicture');
 
 Route::post('passwordRequest', AuthController::class . '@requestPassword');
 
