@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\ProdutoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,11 +18,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 route::post('saveuser', UserController::class . '@store');
-route::group(['middleware'=>['apijwt']], function () {
+
+route::group(['middleware' => ['apijwt']], function () {
+
     route::get('users', UserController::class . '@index');
 
     Route::post('logout', AuthController::class . '@logout');
+
 });
+route::post('saveProduct', ProdutoController::class . '@SaveProduct');
+
 Route::post('passwordRequest', AuthController::class . '@requestPassword');
 
 Route::post('login', AuthController::class . '@login');

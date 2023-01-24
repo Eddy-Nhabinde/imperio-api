@@ -32,6 +32,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->password = password_hash($request->senha, PASSWORD_DEFAULT);
         $user->nome = $request->nome;
+        $user->contacto = $request->contacto;
         $user->apelido = $request->nome;
 
         try {
@@ -62,9 +63,5 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-    }
-
-    public function passwordRequest(Request $request)
-    {
     }
 }
