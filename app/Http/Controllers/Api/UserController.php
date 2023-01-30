@@ -28,17 +28,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new User();
-        $user->email = $request->email;
-        $user->password = password_hash($request->senha, PASSWORD_DEFAULT);
-        $user->nome = $request->nome;
-        $user->contacto = $request->contacto;
-        $user->apelido = $request->nome;
+        if ($this->validating($request)) {
+            $user = new User();
+            $user->email = $request->email;
+            $user->password = password_hash($request->senha, PASSWORD_DEFAULT);
+            $user->name = $request->nome;
+            $user->contacto = $request->contacto;
+            $user->apelido = $request->nome;
 
-        try {
-            $user->save();
-        } catch (Exception $e) {
-            return $e;
+            try {
+                $user->save();
+                return response()->json(['success' => 'Registo feito com sucesso!']);
+            } catch (Exception $e) {
+                return $e;
+            }
+        } else {
+            return response()->json(['error' => 'Email invalido!']);
         }
     }
 
@@ -63,5 +68,17 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    function validating($request)
+    {
+        try {
+            $request->validate([
+                'email' => 'email|max:50|unique:users,email',
+            ]);
+            return true;
+        } catch (\Illuminate\Validation\ValidationException $th) {
+            return false;
+        }
     }
 }
