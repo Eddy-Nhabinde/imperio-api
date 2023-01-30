@@ -45,6 +45,10 @@ class ProdutoController extends Controller
         }
     }
 
+    function getProdutos(){
+
+    }
+
     function update(Request $request, $id)
     {
         if ($this->validating($request)) {

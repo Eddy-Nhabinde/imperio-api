@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\VendasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,8 @@ route::group(['middleware' => ['apijwt']], function () {
 
     route::put('updateProduct/{id}', ProdutoController::class . '@update');
 });
+route::post('novaVenda', VendasController::class . '@novaVenda');
+
 route::post('saveProduct', ProdutoController::class . '@SaveProduct');
 
 route::post('updateProductPicture/{id}', ProdutoController::class . '@updatePicture');
