@@ -4,7 +4,6 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\VendasController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +27,8 @@ route::group(['middleware' => ['apijwt']], function () {
 
     route::put('updateProduct/{id}', ProdutoController::class . '@update');
 });
+route::post('getProducts', ProdutoController::class . '@getProdutos');
+
 route::post('novaVenda', VendasController::class . '@novaVenda');
 
 route::post('saveProduct', ProdutoController::class . '@SaveProduct');
@@ -37,5 +38,7 @@ route::post('updateProductPicture/{id}', ProdutoController::class . '@updatePict
 Route::post('passwordRequest', AuthController::class . '@requestPassword');
 
 Route::post('login', AuthController::class . '@login');
+
 Route::post('refresh', AuthController::class . '@refresh');
+
 Route::post('me', AuthController::class . '@me');

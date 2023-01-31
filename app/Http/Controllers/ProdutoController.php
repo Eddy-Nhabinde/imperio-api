@@ -45,8 +45,44 @@ class ProdutoController extends Controller
         }
     }
 
-    function getProdutos(){
-
+    function getProdutos(Request $request)
+    {
+        try {
+            $produtos = DB::table('produtos')
+                ->join('tipos', 'tipos.id', '=', 'produtos.tipo_id')
+                ->select('produtos.*', 'tipos.nome as tipo')
+                ->when($request, function ($query, $request) {
+                    if (isset($request->minPrice) && isset($request->minPrice)) {
+                        return $query->whereBetween('preco', [$request->minPrice, $request->maxPrice]);
+                    } else if (isset($request->minPrice)) {
+                        return $query->where('preco', '<=', $request->minPrice);
+                    } else if (isset($request->maxPrice)) {
+                        return $query->where('preco', '>=', $request->minPrice);
+                    }
+                })
+                ->when($request, function ($query, $request) {
+                    if (isset($request->minPeso) && isset($request->minPeso)) {
+                        return $query->whereBetween('peso', [$request->minPrice, $request->maxPrice]);
+                    } else if (isset($request->minPeso)) {
+                        return $query->where('peso', '<=', $request->minPeso);
+                    } else if (isset($request->maxPeso)) {
+                        return $query->where('peso', '>=', $request->minPeso);
+                    }
+                })
+                ->when($request, function ($query, $request) {
+                    if (isset($request->tipo_id)) {
+                        return $query->where('tipo_id', $request->tipo_id);
+                    }
+                })
+                ->get();
+            return response()->json([
+                'produtos' => $produtos
+            ]);
+        } catch (Exception $th) {
+            return response()->json([
+                'error' => 'erro inesperado'
+            ]);
+        }
     }
 
     function update(Request $request, $id)
