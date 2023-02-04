@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('preco');
             $table->string('peso')->nullable();
             $table->integer('quantidade');
+            $table->boolean('eliminado')->default(false);
             $table->timestamps();
         });
     }

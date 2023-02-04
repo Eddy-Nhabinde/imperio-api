@@ -78,6 +78,7 @@ class VendasController extends Controller
                 ->join('produtos', 'produtos.id', '=', 'vendas.produto_id')
                 ->join('tipos', 'tipos.id', '=', 'produtos.tipo_id')
                 ->select('vendas.*', 'tipos.nome as tipo', 'produtos.foto')
+                ->where('eliminado', false)
                 ->when($request, function ($query, $request) {
                     if (isset($request->estado)) {
                         return $query->where('estado',  $request->estado);
@@ -93,7 +94,34 @@ class VendasController extends Controller
                     }
                 })
                 ->get();
-            return $vendas;
+            return response($vendas);
+        } catch (Exception $th) {
+            dd($th);
+        }
+    }
+
+    function getStatistics(Request $request)
+    {
+        try {
+            $vendas = DB::table('vendas')
+                ->select(array('estado', DB::raw('COUNT(estado) as total')))
+                ->when($request, function ($query, $request) {
+                    if (isset($request->estado)) {
+                        return $query->where('estado',  $request->estado);
+                    }
+                })
+                ->when($request, function ($query, $request) {
+                    if (isset($request->dataInicial) && isset($request->dataFinal)) {
+                        return $query->whereBetween('created_at', [$request->dataInicial . ' 00:00:00', $request->dataFinal . ' 23:59:59']);
+                    } else if (isset($request->dataInicial)) {
+                        return $query->where('created_at', '>=', $request->dataInicial . ' 00:00:00');
+                    } else if (isset($request->dataFinal)) {
+                        return $query->where('created_at', '<=', $request->dataFinal . ' 23:59:59');
+                    }
+                })
+                ->groupBy('estado')
+                ->get();
+            return response($vendas);
         } catch (Exception $th) {
             dd($th);
         }

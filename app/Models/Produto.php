@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\ProdutoFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,4 +18,9 @@ class Produto extends Model
         'quantidade',
         'peso'
     ];
+
+    protected static function newFactory()
+    {
+        return ProdutoFactory::new();
+    }
 }

@@ -35,6 +35,8 @@ route::post('getVendas', VendasController::class . '@getVendas');
 
 route::post('cancelarVenda', VendasController::class . '@cancelarVenda');
 
+route::post('estatisticasDasVendas', VendasController::class . '@getStatistics');
+
 route::post('saveProduct', ProdutoController::class . '@SaveProduct');
 
 route::post('updateProductPicture/{id}', ProdutoController::class . '@updatePicture');

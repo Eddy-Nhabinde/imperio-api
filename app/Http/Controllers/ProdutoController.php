@@ -51,6 +51,7 @@ class ProdutoController extends Controller
             $produtos = DB::table('produtos')
                 ->join('tipos', 'tipos.id', '=', 'produtos.tipo_id')
                 ->select('produtos.*', 'tipos.nome as tipo')
+                ->where('eliminado', false)
                 ->when($request, function ($query, $request) {
                     if (isset($request->minPrice) && isset($request->minPrice)) {
                         return $query->whereBetween('preco', [$request->minPrice, $request->maxPrice]);
@@ -77,6 +78,24 @@ class ProdutoController extends Controller
                 ->get();
             return response()->json([
                 'produtos' => $produtos
+            ]);
+        } catch (Exception $th) {
+            return response()->json([
+                'error' => 'erro inesperado'
+            ]);
+        }
+    }
+
+    function deleteProduct($id)
+    {
+        try {
+            DB::table('produtos')
+                ->where('id', $id)
+                ->update([
+                    'eliminado' => true
+                ]);
+            return response()->json([
+                'sucesso' => 'Produto eliminado com sucesso'
             ]);
         } catch (Exception $th) {
             return response()->json([
