@@ -19,7 +19,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->string('valor_pago');
-            $table->string('total');
             $table->foreignIdFor(Produto::class);
             $table->string('quantidade');
             $table->string('estado')->default('Espera');

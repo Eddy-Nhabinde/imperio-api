@@ -141,20 +141,30 @@
                     <tr>
                         <td bgcolor="#ffffff" align="left"
                             style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;text-align: center">
-                            Codigo: {{$cod}}
+                            @if (isset($cod))
+                                Codigo: {{ $cod }}
+                            @else
+                                Informamos que o/a senhor/a
+                                <span style="font-weight: bold;">{{ $nome }}</span>
+                                Fez uma encomenda de <span style="font-weight: bold;">{{ $produto }}</span>
+                            @endif
                         </td>
                     </tr>
                     <tr>
                         <td bgcolor="#ffffff" align="left">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
+                                    <td bgcolor="#ffffff" align="center"
+                                        style="padding: 20px 30px 60px 30px;">
                                         <table border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <td align="center" style="border-radius: 5px; width:100px"
+                                            <tr style="height: 35px;">
+                                                <td align="center"
+                                                    style="width:100px;"
                                                     bgcolor="#6597f7">
-                                                    <a href="#" target="_blank"
-                                                        style="font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; display: inline-block;"></a>
+                                                    @if (isset($produto))
+                                                        <a href="#" target="_blank"
+                                                            style="font-size: 17px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 15px; display: inline-block;">Detalhes</a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         </table>

@@ -135,7 +135,6 @@ class VendasController extends Controller
                 'nome' => 'required_if:id,null|string|max:50|unique:produtos,nome',
                 'valorPago' => 'required',
                 'quantidade' => 'required',
-                'valorPago' => 'required'
             ]);
             return true;
         } catch (\Illuminate\Validation\ValidationException $th) {

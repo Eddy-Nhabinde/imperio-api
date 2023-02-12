@@ -10,9 +10,8 @@ class Encomendas extends Model
     use HasFactory;
 
     protected $fillable = [
-        'cliente_id',
-        'valorPago',
-        'Total',
+        'user_id',
+        'valor_pago',
         'produto_id',
         'quantidade',
     ];

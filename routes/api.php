@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\EncomendasController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\VendasController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,8 @@ route::post('estatisticasDasVendas', VendasController::class . '@getStatistics')
 route::post('saveProduct', ProdutoController::class . '@SaveProduct');
 
 route::post('updateProductPicture/{id}', ProdutoController::class . '@updatePicture');
+
+route::post('novaEncomenda', EncomendasController::class . '@novaEncomenda');
 
 Route::post('passwordRequest', AuthController::class . '@requestPassword');
 

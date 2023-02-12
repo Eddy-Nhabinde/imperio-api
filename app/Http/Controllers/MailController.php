@@ -3,31 +3,56 @@
 namespace App\Http\Controllers;
 
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class MailController extends Controller
 {
+    function encomendas($data)
+    {
+        $object = [];
+        $recipient = [];
+        foreach ($data['users'] as $user) {
+            if ($user->acesso == 'admin') {
+                $recipient[] = [$user->email];
+            } else {
+                $object[] = ['key' => 'nome', 'value' => $user->name . " " . $user->apelido];
+            }
+        }
+        $object[] = ['key' => 'subject', 'value' => "Nova Encomenda"];
+        $object[] = ['key' => 'produto', 'value' => $data['prod']];
+
+        foreach ($recipient as $key) {
+            $object[] = ['key' => 'recipient', 'value' => $key[0]];
+            if (!$this->sendEmail($this->getMailData($object))) {
+                return 0;
+            }
+        }
+        return 1;
+    }
+
     function sendPassword($email, $cod)
     {
-        $email_data = [
-            'recipient' => $email,
+        $object[] = ['key' => 'cod', 'value' => $cod];
+        $object[] = ['key' => 'recipient', 'value' => $email];
+        $this->getMailData($object);
+        // if ($this->sendEmail($email_data) == 1) {
+        //     return 1;
+        // } else {
+        //     return 0;
+        // }
+    }
+
+    function getMailData($data)
+    {
+        $mailData = [
             'from' => 'dlabteamsd@gmail.com',
             'fromname' => 'Imperio',
-            'subject' => 'Reposicao da senha',
-            'cod' => $cod,
-            // 'nome' => $nome,
-            // 'apelido' => $apelido,
         ];
 
-
-        if ($this->sendEmail($email_data) == 1) {
-            return 1;
-        } else {
-            return 0;
+        foreach ($data as $key) {
+            $mailData[$key['key']] = $key['value'];
         }
+        return $mailData;
     }
 
     function sendEmail($email_data)

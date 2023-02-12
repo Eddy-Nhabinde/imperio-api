@@ -24,7 +24,6 @@ class EncomendasFactory extends Factory
         return [
             'user_id' => 1,
             'valor_pago' => 1000,
-            'total' => 2000,
             'produto_id' => Produto::inRandomOrder()->first('id'),
             'quantidade' => 10
         ];
